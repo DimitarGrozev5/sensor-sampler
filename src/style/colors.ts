@@ -1,7 +1,7 @@
 export const appColors = {
-  orange: { A500: '#FF6B35' },
-  peach: { A500: '#F7C59F' },
-  beige: { A500: '#EFEFD0' },
-  blue: { A500: '#004E89' },
-  lazuli: { A500: '#1A659E' },
+  orange: { main: '#FF6B35' },
+  peach: { main: '#F7C59F' },
+  beige: { main: '#EFEFD0', light: '#FAFAFA' },
+  blue: { main: '#004E89' },
+  lazuli: { main: '#1A659E' },
 };
