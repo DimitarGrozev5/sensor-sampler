@@ -1,10 +1,23 @@
+import { useState } from 'react';
+
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Settings, StyleSheet, Text, View } from 'react-native';
+
+import SettingsView from './src/components/settings-view';
+import SamplingView from './src/components/sampling-view';
+import { appColors } from './src/style/colors';
 
 export default function App() {
+  const [setingsView, setSettingsView] = useState(false);
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      <View style={styles.content}>
+        {setingsView ? <SettingsView /> : <SamplingView />}
+      </View>
+      <View>
+        <Text>Start/Stop</Text>
+      </View>
       <StatusBar style="auto" />
     </View>
   );
@@ -13,8 +26,11 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: appColors.beige.A500,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  content: {
+    flex: 1,
   },
 });
