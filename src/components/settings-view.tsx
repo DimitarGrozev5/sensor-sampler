@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 import { View, Text, StyleSheet, TextInput } from 'react-native';
-import { useGetUniqueId } from '../hooks/use-get-unique-id';
 import { appColors } from '../style/colors';
 import Spacer from './layout/spacer';
 
