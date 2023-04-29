@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { SampleBufferUpdateFn } from './use-sample-buffer';
+import { SampleBufferUpdateFn } from './use-buffer';
 
 export const useMockSensor = (
   running: boolean,

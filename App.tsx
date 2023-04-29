@@ -15,8 +15,10 @@ import SamplingView from './src/components/sampling-view';
 import { appColors } from './src/style/colors';
 import { useGetUniqueId } from './src/hooks/use-get-unique-id';
 import Button from './src/components/inputs/button';
-import { useSampleBuffer } from './src/hooks/use-sample-buffer';
+import { useBuffers } from './src/hooks/use-buffer';
 import { useMockSensor } from './src/hooks/use-mock-sensor';
+import { useDataTransmition } from './src/hooks/use-data-transmition';
+import { useTakeSamples } from './src/hooks/use-take-samples';
 
 export default function App() {
   const [setingsView, setSettingsView] = useState(true);
@@ -29,11 +31,19 @@ export default function App() {
   const [url, setUrl] = useState('https://');
 
   // Sample buffer
-  const [sampleBuffer, updateSampleBuffer] = useSampleBuffer();
+  const [
+    sampleBuffer,
+    batchBuffer,
+    updateSampleBuffer,
+    updateBatchBuffer,
+    pullBatchBuffer,
+  ] = useBuffers();
 
   // Setup mock sensor
   const [running, setRunning] = useState(false);
   useMockSensor(running, updateSampleBuffer);
+  useTakeSamples(running, sampleRate, updateBatchBuffer);
+  useDataTransmition(running, transmitionRate, pullBatchBuffer);
 
   const handleStartStop = () => {
     setSettingsView((sv) => !sv);
