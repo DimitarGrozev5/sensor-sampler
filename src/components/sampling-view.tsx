@@ -5,6 +5,7 @@ type Props = {
   sampleRate: number;
   transmitionRate: number;
   url: string;
+  transmitionFeedback: string;
 };
 
 const SamplingView: React.FC<Props> = ({
@@ -12,6 +13,7 @@ const SamplingView: React.FC<Props> = ({
   sampleRate,
   transmitionRate,
   url,
+  transmitionFeedback,
 }) => {
   return (
     <View>
@@ -19,6 +21,7 @@ const SamplingView: React.FC<Props> = ({
       <Text>Sample Rate: {sampleRate}ms</Text>
       <Text>Transmition Rate: {transmitionRate}ms</Text>
       <Text>Sending to: {url}</Text>
+      <Text>{transmitionFeedback}</Text>
     </View>
   );
 };

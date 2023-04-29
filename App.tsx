@@ -26,8 +26,8 @@ export default function App() {
   const deviceId = useGetUniqueId();
 
   // State for settings
-  const [sampleRate, setSampleRate] = useState(1000);
-  const [transmitionRate, setTransmitionRate] = useState(10000);
+  const [sampleRate, setSampleRate] = useState(200);
+  const [transmitionRate, setTransmitionRate] = useState(1000);
   const [url, setUrl] = useState('https://');
 
   // Sample buffer
@@ -43,7 +43,11 @@ export default function App() {
   const [running, setRunning] = useState(false);
   useMockSensor(running, updateSampleBuffer);
   useTakeSamples(running, sampleRate, updateBatchBuffer);
-  useDataTransmition(running, transmitionRate, pullBatchBuffer);
+  const feedback = useDataTransmition(
+    running,
+    transmitionRate,
+    pullBatchBuffer
+  );
 
   const handleStartStop = () => {
     setSettingsView((sv) => !sv);
@@ -71,6 +75,7 @@ export default function App() {
                 sampleRate={sampleRate}
                 transmitionRate={transmitionRate}
                 url={url}
+                transmitionFeedback={feedback}
               />
             )}
           </>
