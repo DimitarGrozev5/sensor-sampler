@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 type Props = {
   deviceId: string;
@@ -6,6 +6,8 @@ type Props = {
   transmitionRate: number;
   url: string;
   transmitionFeedback: string;
+
+  gpsError: string;
 };
 
 const SamplingView: React.FC<Props> = ({
@@ -14,6 +16,7 @@ const SamplingView: React.FC<Props> = ({
   transmitionRate,
   url,
   transmitionFeedback,
+  gpsError,
 }) => {
   return (
     <View>
@@ -22,8 +25,15 @@ const SamplingView: React.FC<Props> = ({
       <Text>Transmition Rate: {transmitionRate}ms</Text>
       <Text>Sending to: {url}</Text>
       <Text>{transmitionFeedback}</Text>
+      {gpsError && <Text style={styles.error}>Issue with GPS: {gpsError}</Text>}
     </View>
   );
 };
 
 export default SamplingView;
+
+const styles = StyleSheet.create({
+  error: {
+    color: 'red',
+  },
+});

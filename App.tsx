@@ -19,6 +19,7 @@ import { useBuffers } from './src/hooks/use-buffer';
 import { useMockSensor } from './src/hooks/use-mock-sensor';
 import { useDataTransmition } from './src/hooks/use-data-transmition';
 import { useTakeSamples } from './src/hooks/use-take-samples';
+import { useGPSSensor } from './src/hooks/use-gps-sensor';
 
 export default function App() {
   const [setingsView, setSettingsView] = useState(true);
@@ -39,9 +40,14 @@ export default function App() {
     pullBatchBuffer,
   ] = useBuffers();
 
-  // Setup mock sensor
+  // State for sampling
   const [running, setRunning] = useState(false);
-  useMockSensor(running, updateSampleBuffer);
+
+  // Setup sensors
+  // useMockSensor(running, updateSampleBuffer);
+  const gpsError = useGPSSensor(running, updateSampleBuffer, sampleRate);
+
+  // Stup timers for taking samples from the sample buffer and transmiting them
   useTakeSamples(running, sampleRate, updateBatchBuffer);
   const feedback = useDataTransmition(
     running,
@@ -76,6 +82,7 @@ export default function App() {
                 transmitionRate={transmitionRate}
                 url={url}
                 transmitionFeedback={feedback}
+                gpsError={gpsError}
               />
             )}
           </>

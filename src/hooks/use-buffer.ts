@@ -5,12 +5,27 @@ type MockSensor = {
   value: number;
 };
 
+type GPSSensor = {
+  timestamp: number;
+  value: {
+    accuracy: number | null;
+    altitude: number | null;
+    altitudeAccuracy: number | null;
+    heading: number | null;
+    latitude: number;
+    longitude: number;
+    speed: number | null;
+  };
+};
+
 export type SensorBuffer = {
   mockSensor: MockSensor | null;
+  gpsSensor: GPSSensor | null;
 };
 
 const nullBuffer: SensorBuffer = {
   mockSensor: null,
+  gpsSensor: null,
 };
 
 export type SampleBufferUpdateFn = <T extends keyof SensorBuffer>(

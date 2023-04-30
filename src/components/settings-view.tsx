@@ -67,6 +67,7 @@ const SettingsView: React.FC<Props> = ({
           onChangeText={setUrl}
         />
       </View>
+      <Spacer gap={8} />
     </View>
   );
 };
