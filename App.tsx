@@ -20,6 +20,7 @@ import { useMockSensor } from './src/hooks/use-mock-sensor';
 import { useDataTransmition } from './src/hooks/use-data-transmition';
 import { useTakeSamples } from './src/hooks/use-take-samples';
 import { useGPSSensor } from './src/hooks/use-gps-sensor';
+import { useDeviceSensors } from './src/hooks/use-device-senosrs';
 
 export default function App() {
   const [setingsView, setSettingsView] = useState(true);
@@ -46,6 +47,11 @@ export default function App() {
   // Setup sensors
   // useMockSensor(running, updateSampleBuffer);
   const gpsError = useGPSSensor(running, updateSampleBuffer, sampleRate);
+  const barometerError = useDeviceSensors(
+    running,
+    updateSampleBuffer,
+    sampleRate
+  );
 
   // Stup timers for taking samples from the sample buffer and transmiting them
   useTakeSamples(running, sampleRate, updateBatchBuffer);
@@ -83,6 +89,7 @@ export default function App() {
                 url={url}
                 transmitionFeedback={feedback}
                 gpsError={gpsError}
+                sensorsError={barometerError}
               />
             )}
           </>
@@ -110,6 +117,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    paddingHorizontal: 5,
   },
   control: {
     padding: 30,

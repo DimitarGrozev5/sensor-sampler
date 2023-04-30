@@ -8,6 +8,7 @@ type Props = {
   transmitionFeedback: string;
 
   gpsError: string;
+  sensorsError: string[];
 };
 
 const SamplingView: React.FC<Props> = ({
@@ -17,6 +18,7 @@ const SamplingView: React.FC<Props> = ({
   url,
   transmitionFeedback,
   gpsError,
+  sensorsError,
 }) => {
   return (
     <View>
@@ -26,6 +28,11 @@ const SamplingView: React.FC<Props> = ({
       <Text>Sending to: {url}</Text>
       <Text>{transmitionFeedback}</Text>
       {gpsError && <Text style={styles.error}>Issue with GPS: {gpsError}</Text>}
+      {sensorsError.length > 0 && (
+        <Text style={styles.error}>
+          Issue with sensors: {sensorsError.join(', ')}
+        </Text>
+      )}
     </View>
   );
 };

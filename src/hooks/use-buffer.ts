@@ -18,14 +18,44 @@ type GPSSensor = {
   };
 };
 
+type BarometerSensor = {
+  timestamp: number;
+  value: {
+    pressure: number;
+    relativeAltitude?: number;
+  };
+};
+type GyroscopeSensor = {
+  timestamp: number;
+  value: {
+    x: number;
+    y: number;
+    z: number;
+  };
+};
+type AccelerometerSensor = {
+  timestamp: number;
+  value: {
+    x: number;
+    y: number;
+    z: number;
+  };
+};
+
 export type SensorBuffer = {
   mockSensor: MockSensor | null;
   gpsSensor: GPSSensor | null;
+  barometricSensor: BarometerSensor | null;
+  gyroscopeSensor: GyroscopeSensor | null;
+  accelerometerSensor: AccelerometerSensor | null;
 };
 
 const nullBuffer: SensorBuffer = {
   mockSensor: null,
   gpsSensor: null,
+  barometricSensor: null,
+  gyroscopeSensor: null,
+  accelerometerSensor: null,
 };
 
 export type SampleBufferUpdateFn = <T extends keyof SensorBuffer>(

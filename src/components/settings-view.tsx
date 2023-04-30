@@ -68,6 +68,11 @@ const SettingsView: React.FC<Props> = ({
         />
       </View>
       <Spacer gap={8} />
+
+      <Text>
+        Note: Barometer, Acceleromter and Gyro don't accept a sampling rate of
+        less thatn 200ms
+      </Text>
     </View>
   );
 };

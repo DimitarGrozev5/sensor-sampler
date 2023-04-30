@@ -29,7 +29,12 @@ export const useDataTransmition = (
     if (running) {
       const timer = setInterval(() => {
         const buffer = pullBatchBuffer();
-        console.log(buffer);
+
+        const noNullBuffer = Object.entries(buffer).filter(
+          ([_, value]) => value !== null
+        );
+
+        console.log(noNullBuffer);
 
         setFeedback('Now sending...');
       }, transmitionRate);

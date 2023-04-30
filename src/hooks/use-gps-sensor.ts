@@ -12,6 +12,8 @@ export const useGPSSensor = (
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
+    let stop = false;
+
     if (running) {
       // Define a variable to store the location subscription
       let watchSub: Location.LocationSubscription | null = null;
@@ -34,7 +36,7 @@ export const useGPSSensor = (
           },
           (position) => {
             // If the sensor is not set to *running*, remove the subscription
-            if (!running) {
+            if (stop) {
               if (watchSub) {
                 watchSub.remove();
               }
@@ -52,9 +54,7 @@ export const useGPSSensor = (
       })();
 
       return () => {
-        if (watchSub) {
-          watchSub.remove();
-        }
+        stop = true;
       };
     }
   }, [running, update, sampleRate]);
