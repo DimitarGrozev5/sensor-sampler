@@ -30,16 +30,13 @@ export default function App() {
   // State for settings
   const [sampleRate, setSampleRate] = useState(200);
   const [transmitionRate, setTransmitionRate] = useState(1000);
-  const [url, setUrl] = useState('https://');
+  const [url, setUrl] = useState(
+    'https://www.toptal.com/developers/postbin/1682921773251-2660758406855'
+  );
 
   // Sample buffer
-  const [
-    sampleBuffer,
-    batchBuffer,
-    updateSampleBuffer,
-    updateBatchBuffer,
-    pullBatchBuffer,
-  ] = useBuffers();
+  const [, , updateSampleBuffer, updateBatchBuffer, pullBatchBuffer] =
+    useBuffers();
 
   // State for sampling
   const [running, setRunning] = useState(false);
@@ -55,9 +52,9 @@ export default function App() {
 
   // Stup timers for taking samples from the sample buffer and transmiting them
   useTakeSamples(running, sampleRate, updateBatchBuffer);
-  const feedback = useDataTransmition(
+  const [feedback, log, clearLog] = useDataTransmition(
     running,
-    transmitionRate,
+    { transmitionRate, deviceId, url },
     pullBatchBuffer
   );
 
@@ -80,6 +77,8 @@ export default function App() {
                 setTransmitionRate={setTransmitionRate}
                 url={url}
                 setUrl={setUrl}
+                log={log}
+                clearLog={clearLog}
               />
             ) : (
               <SamplingView
@@ -90,6 +89,7 @@ export default function App() {
                 transmitionFeedback={feedback}
                 gpsError={gpsError}
                 sensorsError={barometerError}
+                log={log}
               />
             )}
           </>

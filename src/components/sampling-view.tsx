@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 
 type Props = {
   deviceId: string;
@@ -9,6 +9,7 @@ type Props = {
 
   gpsError: string;
   sensorsError: string[];
+  log: string[];
 };
 
 const SamplingView: React.FC<Props> = ({
@@ -19,6 +20,7 @@ const SamplingView: React.FC<Props> = ({
   transmitionFeedback,
   gpsError,
   sensorsError,
+  log,
 }) => {
   return (
     <View>
@@ -33,6 +35,13 @@ const SamplingView: React.FC<Props> = ({
           Issue with sensors: {sensorsError.join(', ')}
         </Text>
       )}
+
+      <Text>POST log</Text>
+      <ScrollView style={styles.log}>
+        {log.map((line, index) => (
+          <Text key={index}>{line}</Text>
+        ))}
+      </ScrollView>
     </View>
   );
 };
@@ -42,5 +51,8 @@ export default SamplingView;
 const styles = StyleSheet.create({
   error: {
     color: 'red',
+  },
+  log: {
+    flex: 1,
   },
 });

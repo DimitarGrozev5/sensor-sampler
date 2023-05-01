@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TextInput, ScrollView } from 'react-native';
 import { appColors } from '../style/colors';
 import Spacer from './layout/spacer';
+import Button from './inputs/button';
 
 type Props = {
   deviceId: string;
@@ -12,6 +13,8 @@ type Props = {
   setTransmitionRate: (r: number) => void;
   url: string;
   setUrl: (u: string) => void;
+  log: string[];
+  clearLog: () => void;
 };
 
 const SettingsView: React.FC<Props> = ({
@@ -22,6 +25,8 @@ const SettingsView: React.FC<Props> = ({
   setTransmitionRate,
   url,
   setUrl,
+  log,
+  clearLog,
 }) => {
   const handleRateChange =
     (setter: (val: number) => void) => (newVal: string) => {
@@ -73,6 +78,15 @@ const SettingsView: React.FC<Props> = ({
         Note: Barometer, Acceleromter and Gyro don't accept a sampling rate of
         less thatn 200ms
       </Text>
+      <Spacer gap={16} />
+
+      <Button onPress={clearLog}>Clear log</Button>
+      <Text>POST log</Text>
+      <ScrollView style={styles.log}>
+        {log.map((line, index) => (
+          <Text key={index}>{line}</Text>
+        ))}
+      </ScrollView>
     </View>
   );
 };
@@ -85,5 +99,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: appColors.orange.main,
     padding: 5,
+  },
+  log: {
+    flex: 1,
   },
 });

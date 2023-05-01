@@ -94,6 +94,10 @@ export const useDeviceSensors = (
         stop = true;
       };
     }
+
+    if (!running) {
+      setError([]);
+    }
   }, [running, update]);
 
   return error;
