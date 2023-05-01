@@ -4,16 +4,17 @@ import { appColors } from '../../style/colors';
 type Props = {
   children: string;
   onPress: () => void;
+  plain?: boolean;
 };
 
-const Button: React.FC<Props> = ({ children, onPress }) => {
+const Button: React.FC<Props> = ({ children, onPress, plain }) => {
   return (
     <View style={styles.container}>
       <Pressable
-        style={styles.pressable}
+        style={[styles.pressable, plain ? styles.plainPressable : null]}
         onPress={onPress}
         android_ripple={{
-          color: appColors.peach.main,
+          color: appColors.orange.main,
         }}
       >
         <Text style={styles.text}>{children}</Text>
@@ -39,5 +40,10 @@ const styles = StyleSheet.create({
   text: {
     color: appColors.blue.main,
     textAlign: 'center',
+  },
+
+  plainPressable: {
+    backgroundColor: '#00000000',
+    elevation: 0,
   },
 });

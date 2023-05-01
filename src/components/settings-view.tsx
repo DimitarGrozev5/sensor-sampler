@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
-
 import { View, Text, StyleSheet, TextInput, ScrollView } from 'react-native';
 import { appColors } from '../style/colors';
 import Spacer from './layout/spacer';
 import Button from './inputs/button';
+import NumberInput from './inputs/number-input';
 
 type Props = {
   deviceId: string;
@@ -37,34 +36,38 @@ const SettingsView: React.FC<Props> = ({
     };
   return (
     <View>
-      <Text>Device ID: {deviceId}</Text>
+      <Text>
+        <Text style={styles.header}>Device ID:</Text> {deviceId}
+      </Text>
 
-      <Spacer gap={8} />
+      <Spacer gap={10} />
 
       <View>
-        <Text>Sampling rate (in miliseconds)</Text>
-        <TextInput
+        <Text style={styles.header}>Sampling rate (in miliseconds)</Text>
+        <NumberInput value={sampleRate} onChange={setSampleRate} />
+        {/* <TextInput
           style={styles.input}
           placeholder="Enter text here"
           value={sampleRate.toString()}
           onChangeText={handleRateChange(setSampleRate)}
-        />
+        /> */}
       </View>
-      <Spacer gap={8} />
+      <Spacer gap={10} />
 
       <View>
-        <Text>Transmition rate (in miliseconds)</Text>
-        <TextInput
+        <Text style={styles.header}>Transmition rate (in miliseconds)</Text>
+        <NumberInput value={transmitionRate} onChange={setTransmitionRate} />
+        {/* <TextInput
           style={styles.input}
           placeholder="Enter text here"
           value={transmitionRate.toString()}
           onChangeText={handleRateChange(setTransmitionRate)}
-        />
+        /> */}
       </View>
-      <Spacer gap={8} />
+      <Spacer gap={10} />
 
       <View>
-        <Text>Server URL</Text>
+        <Text style={styles.header}>Server URL</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter text here"
@@ -72,16 +75,18 @@ const SettingsView: React.FC<Props> = ({
           onChangeText={setUrl}
         />
       </View>
-      <Spacer gap={8} />
+      <Spacer gap={10} />
 
       <Text>
         Note: Barometer, Acceleromter and Gyro don't accept a sampling rate of
-        less thatn 200ms
+        less thatn 200ms; GPS will probably not update that often
       </Text>
       <Spacer gap={16} />
 
-      <Button onPress={clearLog}>Clear log</Button>
-      <Text>POST log</Text>
+      <Text style={styles.header}>POST log</Text>
+      <Button plain onPress={clearLog}>
+        Clear log
+      </Button>
       <ScrollView style={styles.log}>
         {log.map((line, index) => (
           <Text key={index}>{line}</Text>
@@ -94,6 +99,10 @@ const SettingsView: React.FC<Props> = ({
 export default SettingsView;
 
 const styles = StyleSheet.create({
+  header: {
+    fontSize: 18,
+    color: appColors.orange.main,
+  },
   input: {
     backgroundColor: appColors.beige.light,
     borderWidth: 1,
