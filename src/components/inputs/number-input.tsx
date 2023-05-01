@@ -23,6 +23,9 @@ const NumberInput: React.FC<Props> = ({ value, onChange }) => {
 
   return (
     <View style={styles.container}>
+      {(Number.isNaN(value) || value < 1) && (
+        <Text style={styles.invalidInput}>Invalid value</Text>
+      )}
       <View style={styles.inputContainer}>
         <Button plain onPress={handleButtonChange(-1)}>
           -100ms
@@ -58,5 +61,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: appColors.beige.light,
     padding: 5,
+  },
+  invalidInput: {
+    color: 'red',
   },
 });

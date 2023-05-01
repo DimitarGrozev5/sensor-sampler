@@ -27,13 +27,6 @@ const SettingsView: React.FC<Props> = ({
   log,
   clearLog,
 }) => {
-  const handleRateChange =
-    (setter: (val: number) => void) => (newVal: string) => {
-      const value = parseInt(newVal);
-
-      if (Number.isNaN(value) || value < 1) return;
-      setter(value);
-    };
   return (
     <View>
       <Text>
@@ -79,7 +72,7 @@ const SettingsView: React.FC<Props> = ({
 
       <Text>
         Note: Barometer, Acceleromter and Gyro don't accept a sampling rate of
-        less thatn 200ms; GPS will probably not update that often
+        less thatn 200ms; GPS will probably not update that often anyways;
       </Text>
       <Spacer gap={16} />
 
