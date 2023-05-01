@@ -84,7 +84,7 @@ export const useDeviceSensors = (
 
         // Update the sample buffer if the sensor is set to *running*
         const now = new Date().getTime();
-        update('gyroscopeSensor', {
+        update('accelerometerSensor', {
           timestamp: now,
           value: { ...meas },
         });

@@ -30,11 +30,20 @@ export const useDataTransmition = (
       const timer = setInterval(() => {
         const buffer = pullBatchBuffer();
 
-        const noNullBuffer = Object.entries(buffer).filter(
-          ([_, value]) => value !== null
+        const noNullBuffer = buffer.map((b) =>
+          Object.entries(b).reduce((buff, [sensor, value]) => {
+            if (value !== null) {
+              return { ...buff, [sensor]: value };
+            }
+            return buff;
+          }, {} as Partial<SensorBuffer>)
         );
 
-        console.log(noNullBuffer);
+        const keysOnly = buffer.map((b) =>
+          Object.entries(b).flatMap(([k, v]) => (!!v ? k : []))
+        );
+
+        console.log(keysOnly);
 
         setFeedback('Now sending...');
       }, transmitionRate);
