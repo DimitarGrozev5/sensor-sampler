@@ -16,11 +16,11 @@ import { appColors } from './src/style/colors';
 import { useGetUniqueId } from './src/hooks/use-get-unique-id';
 import Button from './src/components/inputs/button';
 import { useBuffers } from './src/hooks/use-buffer';
-import { useMockSensor } from './src/hooks/use-mock-sensor';
 import { useDataTransmition } from './src/hooks/use-data-transmition';
 import { useTakeSamples } from './src/hooks/use-take-samples';
 import { useGPSSensor } from './src/hooks/use-gps-sensor';
 import { useDeviceSensors } from './src/hooks/use-device-senosrs';
+import { useLocalStorageState } from './src/hooks/use-local-storage-state';
 
 export default function App() {
   const [setingsView, setSettingsView] = useState(true);
@@ -28,9 +28,16 @@ export default function App() {
   const deviceId = useGetUniqueId();
 
   // State for settings
-  const [sampleRate, setSampleRate] = useState(200);
-  const [transmitionRate, setTransmitionRate] = useState(1000);
-  const [url, setUrl] = useState(
+  const [sampleRate, setSampleRate] = useLocalStorageState<number>(
+    'sampleRate',
+    200
+  );
+  const [transmitionRate, setTransmitionRate] = useLocalStorageState<number>(
+    'transmitionRate',
+    1000
+  );
+  const [url, setUrl] = useLocalStorageState<string>(
+    'url',
     'https://www.toptal.com/developers/postbin/1682921773251-2660758406855'
   );
 

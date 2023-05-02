@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TextInput, ScrollView } from 'react-native';
 import Button from './button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { appColors } from '../../style/colors';
 
 type Props = {
@@ -20,6 +20,18 @@ const NumberInput: React.FC<Props> = ({ value, onChange }) => {
     setInternalValue(value);
     onChange(Number(value));
   };
+
+  // When the value prop changes, update the internal value
+  // if the value prop is not a valid number, don't update the internal value
+  useEffect(() => {
+    if (
+      value >= 1 &&
+      !Number.isNaN(value) &&
+      value.toString() !== internalValue
+    ) {
+      setInternalValue(value.toString());
+    }
+  }, [value, internalValue]);
 
   return (
     <View style={styles.container}>

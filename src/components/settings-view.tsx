@@ -81,6 +81,7 @@ const SettingsView: React.FC<Props> = ({
         Clear log
       </Button>
       <ScrollView style={styles.log}>
+        {log.length === 0 && <Text>Nothing to log yet</Text>}
         {log.map((line, index) => (
           <Text key={index}>{line}</Text>
         ))}
