@@ -3,6 +3,7 @@ import { appColors } from '../style/colors';
 import Spacer from './layout/spacer';
 import Button from './inputs/button';
 import NumberInput from './inputs/number-input';
+import { LogEntry } from '../hooks/use-data-transmition';
 
 type Props = {
   deviceId: string;
@@ -12,7 +13,7 @@ type Props = {
   setTransmitionRate: (r: number) => void;
   url: string;
   setUrl: (u: string) => void;
-  log: string[];
+  log: LogEntry[];
   clearLog: () => void;
 };
 
@@ -38,35 +39,28 @@ const SettingsView: React.FC<Props> = ({
       <View>
         <Text style={styles.header}>Sampling rate (in miliseconds)</Text>
         <NumberInput value={sampleRate} onChange={setSampleRate} />
-        {/* <TextInput
-          style={styles.input}
-          placeholder="Enter text here"
-          value={sampleRate.toString()}
-          onChangeText={handleRateChange(setSampleRate)}
-        /> */}
       </View>
       <Spacer gap={10} />
 
       <View>
         <Text style={styles.header}>Transmition rate (in miliseconds)</Text>
         <NumberInput value={transmitionRate} onChange={setTransmitionRate} />
-        {/* <TextInput
-          style={styles.input}
-          placeholder="Enter text here"
-          value={transmitionRate.toString()}
-          onChangeText={handleRateChange(setTransmitionRate)}
-        /> */}
       </View>
       <Spacer gap={10} />
 
       <View>
         <Text style={styles.header}>Server URL</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter text here"
-          value={url}
-          onChangeText={setUrl}
-        />
+        <View style={styles.inputContrainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter text here"
+            value={url}
+            onChangeText={setUrl}
+          />
+          <Button onPress={() => setUrl('https://')} plain>
+            X
+          </Button>
+        </View>
       </View>
       <Spacer gap={10} />
 
@@ -81,9 +75,9 @@ const SettingsView: React.FC<Props> = ({
         Clear log
       </Button>
       <ScrollView style={styles.log}>
-        {log.length === 0 && <Text>Nothing to log yet</Text>}
-        {log.map((line, index) => (
-          <Text key={index}>{line}</Text>
+        {log.length === 0 && <Text>No log yet</Text>}
+        {log.map((line) => (
+          <Text key={line.timestamp}>{line.log}</Text>
         ))}
       </ScrollView>
     </View>
@@ -97,11 +91,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: appColors.orange.main,
   },
-  input: {
+  inputContrainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: appColors.beige.light,
     borderWidth: 1,
     borderColor: appColors.orange.main,
+  },
+  input: {
     padding: 5,
+    flex: 1,
   },
   log: {
     flex: 1,

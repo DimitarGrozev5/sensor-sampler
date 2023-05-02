@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { SensorBuffer } from './use-buffer';
 import { getDateString } from '../util/get-date-string';
 
+export type LogEntry = { log: string; timestamp: number };
+
 export const useDataTransmition = (
   running: boolean,
   {
@@ -19,7 +21,7 @@ export const useDataTransmition = (
   const [feedback, setFeedback] = useState('');
 
   // State for HTTP Logs
-  const [log, setLog] = useState<string[]>([]);
+  const [log, setLog] = useState<LogEntry[]>([]);
   const clearLog = useCallback(() => setLog([]), []);
 
   // When the feedback change from an empty string to a non-empty string,
@@ -61,21 +63,31 @@ export const useDataTransmition = (
 
         fetch(url, { body: bufferToJSON, method: 'POST' })
           .then((res) => {
-            const now = getDateString(new Date());
+            const now = new Date();
             if (res.ok) {
               setLog((lg) => [
                 ...lg,
-                `[${now}]: Sent ${noNullBuffer.length} records`,
+                {
+                  timestamp: now.getTime(),
+                  log: `[${getDateString(now)}]: Sent ${
+                    noNullBuffer.length
+                  } records`,
+                },
               ]);
             } else {
               throw new Error(`Status ${res.status}`);
             }
           })
           .catch((err) => {
-            const now = getDateString(new Date());
+            const now = new Date();
             setLog((lg) => [
               ...lg,
-              `[${now}]: Error sending data: ${err.message}`,
+              {
+                timestamp: now.getTime(),
+                log: `[${getDateString(now)}]: Error sending data: ${
+                  err.message
+                }`,
+              },
             ]);
           });
 

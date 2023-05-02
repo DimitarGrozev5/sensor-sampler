@@ -1,4 +1,6 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native';
+import { LogEntry } from '../hooks/use-data-transmition';
+import { useRef } from 'react';
 
 type Props = {
   deviceId: string;
@@ -9,7 +11,7 @@ type Props = {
 
   gpsError: string;
   sensorsError: string[];
-  log: string[];
+  log: LogEntry[];
 };
 
 const SamplingView: React.FC<Props> = ({
@@ -22,6 +24,12 @@ const SamplingView: React.FC<Props> = ({
   sensorsError,
   log,
 }) => {
+  const flatListRef = useRef<FlatList | null>(null);
+
+  const handleContentSizeChange = () => {
+    if (flatListRef.current && log.length > 0)
+      flatListRef.current.scrollToEnd();
+  };
   return (
     <View>
       <Text>Device Id: {deviceId}</Text>
@@ -37,11 +45,20 @@ const SamplingView: React.FC<Props> = ({
       )}
 
       <Text>POST log</Text>
-      <ScrollView style={styles.log}>
-        {log.map((line, index) => (
-          <Text key={index}>{line}</Text>
+      <FlatList
+        style={styles.log}
+        ref={flatListRef}
+        data={log}
+        renderItem={({ item }) => <Text>{item.log}</Text>}
+        keyExtractor={(item) => item.timestamp.toString()}
+        onContentSizeChange={handleContentSizeChange}
+        onLayout={handleContentSizeChange}
+      />
+      {/* <ScrollView style={styles.log}>
+        {log.map((line) => (
+          <Text key={line.timestamp}>{line.log}</Text>
         ))}
-      </ScrollView>
+      </ScrollView> */}
     </View>
   );
 };
