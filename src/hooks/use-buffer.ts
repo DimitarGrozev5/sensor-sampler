@@ -91,11 +91,23 @@ export const useBuffers = () => {
     return batchBufferCopy;
   }, []);
 
+  const getBatchBuffer = useCallback(() => {
+    const batchBufferCopy = batchBuffer.current.slice();
+    const samplesLength = batchBufferCopy.length;
+
+    const commit = () => {
+      batchBuffer.current.splice(0, samplesLength);
+    };
+
+    return [batchBufferCopy, commit] as const;
+  }, []);
+
   return [
     sampleBuffer,
     batchBuffer,
     updateSampleBuffer,
     updateBatchBuffer,
     pullBatchBuffer,
+    getBatchBuffer,
   ] as const;
 };

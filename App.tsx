@@ -21,6 +21,7 @@ import { useTakeSamples } from './src/hooks/use-take-samples';
 import { useGPSSensor } from './src/hooks/use-gps-sensor';
 import { useDeviceSensors } from './src/hooks/use-device-senosrs';
 import { useLocalStorageState } from './src/hooks/use-local-storage-state';
+import { useSyncDataTransmition } from './src/hooks/use-sync-data-transmition';
 
 export default function App() {
   const [setingsView, setSettingsView] = useState(true);
@@ -42,8 +43,14 @@ export default function App() {
   );
 
   // Sample buffer
-  const [, , updateSampleBuffer, updateBatchBuffer, pullBatchBuffer] =
-    useBuffers();
+  const [
+    ,
+    ,
+    updateSampleBuffer,
+    updateBatchBuffer,
+    pullBatchBuffer,
+    getBatchBuffer,
+  ] = useBuffers();
 
   // State for sampling
   const [running, setRunning] = useState(false);
@@ -59,10 +66,15 @@ export default function App() {
 
   // Stup timers for taking samples from the sample buffer and transmiting them
   useTakeSamples(running, sampleRate, updateBatchBuffer);
-  const [feedback, log, clearLog] = useDataTransmition(
+  // const [feedback, log, clearLog] = useDataTransmition(
+  //   running,
+  //   { transmitionRate, deviceId, url },
+  //   pullBatchBuffer
+  // );
+  const [feedback, log, clearLog] = useSyncDataTransmition(
     running,
     { transmitionRate, deviceId, url },
-    pullBatchBuffer
+    getBatchBuffer
   );
 
   const handleStartStop = () => {
