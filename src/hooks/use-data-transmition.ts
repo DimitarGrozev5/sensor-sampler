@@ -24,6 +24,9 @@ export const useDataTransmition = (
   const [log, setLog] = useState<LogEntry[]>([]);
   const clearLog = useCallback(() => setLog([]), []);
 
+  // State for failed batches
+  const failedBatches = useRef<SensorBuffer[]>([]);
+
   // When the feedback change from an empty string to a non-empty string,
   // the user feedback will be displayed for a few seconds
   useEffect(() => {
@@ -43,9 +46,14 @@ export const useDataTransmition = (
   useEffect(() => {
     if (running && deviceId) {
       const timer = setInterval(() => {
+        // Pull and clear data from the batch buffer
         const buffer = pullBatchBuffer();
 
-        const noNullBuffer = buffer.map((b) =>
+        // Combine the failed batches, if any, with the new batch
+        const allData = [...failedBatches.current.splice(0), ...buffer];
+
+        // Remove null values for sensors
+        const noNullBuffer = allData.map((b) =>
           Object.entries(b).reduce((buff, [sensor, value]) => {
             if (value !== null) {
               return { ...buff, [sensor]: value };
@@ -59,7 +67,10 @@ export const useDataTransmition = (
         // );
         // console.log(keysOnly);
 
-        const bufferToJSON = JSON.stringify({ deviceId, data: noNullBuffer });
+        const bufferToJSON = JSON.stringify({
+          deviceId,
+          data: noNullBuffer,
+        });
 
         fetch(url, { body: bufferToJSON, method: 'POST' })
           .then((res) => {
@@ -86,9 +97,11 @@ export const useDataTransmition = (
                 timestamp: now.getTime(),
                 log: `[${getDateString(now)}]: Error sending data: ${
                   err.message
-                }`,
+                }; ${allData.length} records will be retried`,
               },
             ]);
+
+            failedBatches.current.push(...allData);
           });
 
         setFeedback('Now sending...');
@@ -96,6 +109,15 @@ export const useDataTransmition = (
 
       return () => {
         clearInterval(timer);
+        setLog((lg) => [
+          ...lg,
+          {
+            timestamp: new Date().getTime(),
+            log: `[${getDateString(new Date())}]: ${
+              failedBatches.current.length
+            } records failed to send. Stopped sending data.`,
+          },
+        ]);
       };
     }
   }, [running, deviceId, transmitionRate, pullBatchBuffer]);
