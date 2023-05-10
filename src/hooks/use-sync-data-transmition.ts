@@ -69,7 +69,15 @@ export const useSyncDataTransmition = (
           data: noNullBuffer,
         });
 
-        fetch(url, { body: bufferToJSON, method: 'POST' })
+        fetch(url, {
+          body: bufferToJSON,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization:
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluQHNoaW5vYml0LmlvIiwic3ViIjoiYWRtaW5Ac2hpbm9iaXQuaW8iLCJqdGkiOiJmN2EyYzdlNS05MWU1LTQ2MWEtOWUxOS0xNDY3ZGZiNThkMjMiLCJpYXQiOjE2ODM0ODgzNjMsIm5iZiI6MTY4MzQ4ODM2MywiZXhwIjoxNjgzNDg4NDIzLCJpc3MiOiJodHRwOi8vYXBpdGVzdDIuYmVyZWFkeS5maS8iLCJhdWQiOiIqIn0.oBE7PSwEwyj4p71YJH_HMrrrFhj3qZr3KdHpyhnD4fo',
+          },
+        })
           .then((res) => {
             const now = new Date();
             if (res.ok) {
